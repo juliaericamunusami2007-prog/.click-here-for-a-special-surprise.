@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>For My Love ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(#f8d7da, #f4c2c2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,182,193,0.4), transparent 60%);
+      animation: glowMove 14s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes glowMove {
+      0% { transform: translate(-20%, -20%); }
+      50% { transform: translate(20%, 20%); }
+      100% { transform: translate(-20%, -20%); }
+    }
+
+    .open-btn {
+      padding: 18px 40px;
+      font-size: 22px;
+      border-radius: 40px;
+      border: none;
+      background: #e63946;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+      z-index: 5;
+    }
+
+    .card {
+      background: #efd3d3;
+      width: 85%;
+      max-width: 650px;
+      padding: 60px 40px;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      display: none;
+      position: relative;
+      z-index: 5;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .card.show { animation: riseFade 1.6s ease forwards; }
+    @keyframes riseFade { to { opacity: 1; transform: translateY(0); } }
+
+    h1,h2 { font-family: 'Great Vibes', cursive; color:#b11226; animation: heartbeat 2s infinite; }
+    h1 { font-size: 60px; margin:0; }
+    h2 { font-size:50px; margin-bottom:20px; }
+    @keyframes heartbeat {0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
+    p { color:#b11226; font-size:22px; line-height:1.7; margin:10px 0; }
+    .signature { margin-top:40px; font-family:'Great Vibes', cursive; font-size:22px; }
+
+    /* Floating hearts */
+    .floating-heart {
+      position: absolute;
+      font-size: 22px;
+      opacity: 0.7;
+      animation: floatUp 7s linear infinite;
+      z-index: 1;
+    }
+    @keyframes floatUp { from{transform:translateY(110vh);} to{transform:translateY(-10vh);} }
+
+    /* Love letter */
+    .heart-btn {
+      font-size: 34px;
+      cursor: pointer;
+      animation: glowPulse 2s infinite;
+      display: inline-block;
+    }
+    @keyframes glowPulse { 0%,100%{text-shadow:0 0 6px rgba(255,0,0,0.4);} 50%{text-shadow:0 0 20px rgba(255,0,0,1);} }
+    #hiddenLetter { display:none; font-size:18px; color:#b11226; margin-top:10px; white-space:nowrap; animation: popOut 0.5s ease forwards; }
+    @keyframes popOut { from{transform:scale(0.6);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+    /* Balloons */
+    .balloon-cluster { position: fixed; top: 10px; display:flex; gap:6px; opacity:0; transition:opacity 1.5s ease; z-index:10; }
+    .left-cluster { left:10px; } .right-cluster{right:10px;}
+    .top-balloon { font-size:30px; cursor:pointer; animation: balloonFloat 3s ease-in-out infinite; }
+    @keyframes balloonFloat {0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+    .balloon-message { position: fixed; top:75px; max-width:200px; background:#efd3d3; padding:12px; border-radius:10px; font-size:14px; color:#b11226; display:none; z-index:20; animation: popOut 0.4s ease; }
+    .left-message{ left:10px; } .right-message{ right:10px; }
+
+    /* Love counter */
+    .love-counter {
+      position: fixed;
+      bottom: 150px; /* moved up */
+      right: 15px;
+      font-size:13px;
+      color:#b11226;
+      z-index:20;
+      text-align:right;
+      cursor:pointer;
+      display:none; /* hidden until Open Me */
+    }
+    .counter-secret {
+      display:none;
+      font-size:13px;
+      white-space:nowrap;
+      margin-top:6px;
+      animation: popOut 0.4s ease;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="balloon-cluster left-cluster" id="leftBalloons">
+  <span class="top-balloon" onclick="showBalloonMessage(0)">🎈</span>
+  <span class="top-balloon" onclick="showBalloonMessage(1)">🎈</span>
+  <span class="top-balloon" onclick="showBalloonMessage(2)">🎈</span>
+</div>
+
+<div class="balloon-cluster right-cluster" id="rightBalloons">
+  <span class="top-balloon" onclick="showBalloonMessage(3)">🎈</span>
+  <span class="top-balloon" onclick="showBalloonMessage(4)">🎈</span>
+  <span class="top-balloon" onclick="showBalloonMessage(5)">🎈</span>
+</div>
+
+<div id="balloonMessage" class="balloon-message left-message"></div>
+
+<button class="open-btn" onclick="openCard()">Open Me ❤️</button>
+
+<div class="card" id="card">
+  <h1>Happy Valentine’s Day</h1>
+  <h2>My Love</h2>
+
+  <p>To the one who holds the key to my heart 🔑❤️, my rock, my safe place 🫂, my home, my soulmate 🤍, my other half, my forever person 👫, I love you with every ounce of love that my heart holds 💘.</p>
+
+  <p>You are the sweetest soul I've ever known. Cheers to our 2nd Valentine's Day together, and here's to forevermore ahead!!! 🎉❤️</p>
+
+  <div>
+    <span class="heart-btn" onclick="toggleLetter()">💌</span>
+    <div id="hiddenLetter">I will love you till my last breath ❤️</div>
+  </div>
+
+  <p class="signature">With love, always, your girl</p>
+</div>
+
+<div class="love-counter" id="loveCounter">
+  Together for <span id="counterTime"></span> <span id="counterHeart">❤️</span>
+  <div class="counter-secret" id="counterSecret">You make me feel like I've been locked out of heaven 🫶🏻</div>
+</div>
+
+<audio id="music" preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=romantic-love-11786.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function openCard() {
+  document.querySelector(".open-btn").style.display="none";
+  const card=document.getElementById("card");
+  card.style.display="block";
+  card.classList.add("show");
+
+  // Show love counter
+  document.getElementById("loveCounter").style.display="block";
+
+  // Burst of hearts
+  for(let i=0;i<25;i++){
+    const heart=document.createElement("div");
+    heart.className="floating-heart";
+    heart.innerHTML="❤️";
+    heart.style.left=50+Math.random()*200-100+"vw";
+    heart.style.top=50+Math.random()*100-50+"vh";
+    heart.style.fontSize=(15+Math.random()*25)+"px";
+    document.body.appendChild(heart);
+    heart.animate([{transform:"translateY(0) scale(1)",opacity:1},{transform:`translateY(-150px) scale(0.8)`,opacity:0}],{duration:1200});
+    setTimeout(()=>heart.remove(),1200);
+  }
+
+  document.getElementById("leftBalloons").style.opacity=1;
+  document.getElementById("rightBalloons").style.opacity=1;
+
+  startFloatingHearts();
+
+  const music=document.getElementById("music");
+  music.volume=0;
+  music.play();
+  let v=0;
+  const fade=setInterval(()=>{ if(v<0.7){v+=0.02; music.volume=v;} else clearInterval(fade); },200);
+}
+
+function startFloatingHearts(){
+  setInterval(()=>{
+    const heart=document.createElement("div");
+    heart.className="floating-heart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(18+Math.random()*20)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),7000);
+  },600);
+}
+
+/* Toggle love letter */
+function toggleLetter(){
+  const letter=document.getElementById("hiddenLetter");
+  letter.style.display = (letter.style.display==="block")?"none":"block";
+
+  if(letter.style.display==="block"){
+    for(let i=0;i<18;i++){
+      const spark=document.createElement("div");
+      spark.innerHTML="✨";
+      spark.style.position="absolute";
+      spark.style.left="50%";
+      spark.style.top="55%";
+      document.body.appendChild(spark);
+      spark.animate([{transform:"translate(0,0)",opacity:1},{transform:`translate(${Math.random()*300-150}px,${Math.random()*300-150}px)`,opacity:0}],{duration:700});
+      setTimeout(()=>spark.remove(),700);
+    }
+  }
+}
+
+/* Balloon messages */
+const balloonMessages=[
+"You are my favourite ❤️",
+"I would choose you a million times over without a doubt ❤️",
+"You are the best thing that has ever happened to me ❤️",
+"That sweet smile of yours is the most heartwarming ❤️",
+"Forever and For Always, My Baby ❤️",
+"You're my end and every beginning ❤️"
+];
+
+let activeBalloon=null;
+function showBalloonMessage(index){
+  const box=document.getElementById("balloonMessage");
+  if(activeBalloon===index){box.style.display="none"; activeBalloon=null; return;}
+  activeBalloon=index;
+  box.innerText=balloonMessages[index];
+  box.className=index<3?"balloon-message left-message":"balloon-message right-message";
+  box.style.display="block";
+}
+
+/* Love counter */
+function updateLoveCounterLive(){
+  const start=new Date("2024-10-08T00:00:00");
+  const now=new Date();
+  let diff=now-start;
+  const years=Math.floor(diff/(1000*60*60*24*365));
+  diff%=1000*60*60*24*365;
+  const weeks=Math.floor(diff/(1000*60*60*24*7));
+  diff%=1000*60*60*24*7;
+  const days=Math.floor(diff/(1000*60*60*24));
+  const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  document.getElementById("counterTime").innerText=`${years}y • ${weeks}w • ${days}d • ${hours}h`;
+}
+setInterval(updateLoveCounterLive,1000);
+updateLoveCounterLive();
+
+/* Toggle counter secret */
+document.getElementById("counterHeart").addEventListener("click",()=>{
+  const s=document.getElementById("counterSecret");
+  s.style.display = (s.style.display==="block")?"none":"block";
+});
+</script>
+
+</body>
+</html>
