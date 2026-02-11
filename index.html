@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Alex+Brush&display=swap" rel="stylesheet">
+
 
   <style>
     body {
       margin: 0;
       overflow: hidden;
-      font-family: 'Playfair Display', serif;
+      font-family: 'Alex Brush', cursive;
       background: linear-gradient(#f8d7da, #f4c2c2);
       display: flex;
       justify-content: center;
@@ -162,7 +163,10 @@
 
 <div class="love-counter" id="loveCounter">
   Together for <span id="counterTime"></span> <span id="counterHeart">❤️</span>
-  <div class="counter-secret" id="counterSecret">You make me feel like I've been locked out of heaven 🫶🏻</div>
+<div class="counter-secret" id="counterSecret" style="font-family:'Alex Brush',cursive;font-size:18px;">
+For you, the world 💋
+</div>
+
 </div>
 
 <audio id="music" preload="auto">
@@ -205,16 +209,19 @@ function openCard() {
 }
 
 function startFloatingHearts(){
+  const icons = ["❤️","💋"];
+
   setInterval(()=>{
     const heart=document.createElement("div");
     heart.className="floating-heart";
-    heart.innerHTML="❤️";
+    heart.innerHTML=icons[Math.floor(Math.random()*icons.length)];
     heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(18+Math.random()*20)+"px";
+    heart.style.fontSize=(20+Math.random()*22)+"px";
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),7000);
-  },600);
+  },500);
 }
+
 
 /* Toggle love letter */
 function toggleLetter(){
@@ -246,14 +253,31 @@ const balloonMessages=[
 ];
 
 let activeBalloon=null;
-function showBalloonMessage(index){
+
+function typeWriter(element, text, speed=25){
+  element.innerHTML="";
+  let i=0;
+  const typing=setInterval(()=>{
+    element.innerHTML += text.charAt(i);
+    i++;
+    if(i>=text.length) clearInterval(typing);
+  }, speed);
+}function showBalloonMessage(index){
   const box=document.getElementById("balloonMessage");
-  if(activeBalloon===index){box.style.display="none"; activeBalloon=null; return;}
+
+  if(activeBalloon===index){
+    box.style.display="none";
+    activeBalloon=null;
+    return;
+  }
+
   activeBalloon=index;
-  box.innerText=balloonMessages[index];
   box.className=index<3?"balloon-message left-message":"balloon-message right-message";
   box.style.display="block";
+
+  typeWriter(box, balloonMessages[index], 22);
 }
+
 
 /* Love counter */
 function updateLoveCounterLive(){
@@ -274,7 +298,16 @@ updateLoveCounterLive();
 /* Toggle counter secret */
 document.getElementById("counterHeart").addEventListener("click",()=>{
   const s=document.getElementById("counterSecret");
-  s.style.display = (s.style.display==="block")?"none":"block";
+
+  if(s.style.display==="block"){
+    s.style.display="none";
+    return;
+  }
+
+  s.style.display="block";
+  typeWriter(s,"For you, the world 💋",28);
+});
+
 });
 </script>
 
